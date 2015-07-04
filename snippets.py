@@ -15,7 +15,7 @@ def put(name, snippet):
 def get(name):
     """Retrieve the snippet with a given name.
 
-    If there is no such snippet...
+    If there is no such snippet return error message.
 
     Returns the snippet.
     """
