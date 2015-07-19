@@ -34,6 +34,15 @@ def get(name):
         row = [False]
     return row[0]
     
+def catalog():
+    """Display catalog of keywords"""
+    logging.info("Displaying keywords")
+    with connection, connection.cursor() as cursor:
+        cursor.execute("select keyword from snippets")
+        row = cursor.fetchall()
+    logging.debug("Keywords displayed successfully.")
+    return row
+    
 def main():
     logging.info("Constructing parser")
     parser = argparse.ArgumentParser(description="Store and retrieve snippets of text")
@@ -49,6 +58,8 @@ def main():
     get_parser = subparsers.add_parser("get", help="Retrieve a snippet")
     get_parser.add_argument("name", help="The name of the snippet")
     
+    catalog_parser = subparsers.add_parser("catalog", help="Catalog of keywords")
+    
     arguments = parser.parse_args(sys.argv[1:])
     
     arguments = vars(arguments)
@@ -63,5 +74,9 @@ def main():
             print 'Error: Snippet does not exist'
         else:
             print("Retrieved snippet: {!r}".format(snippet))
+    elif command == "catalog":
+        keywords = catalog()
+        print keywords
+        
 if __name__ == "__main__":
     main()
